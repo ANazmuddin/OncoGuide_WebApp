@@ -3,8 +3,8 @@ import { IconCirclePlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import { usePrivy } from "@privy-io/react-auth";
 import { useStateContext } from "../../context/index";
-import CreateRecordModal from "./components/create-record-modal"; // Adjust the import path
-import RecordCard from "./components/record-card"; // Adjust the import path
+import CreateRecordModal from "./components/create-record-modal"; 
+import RecordCard from "./components/record-card"; 
 
 const Index = () => {
   const navigate = useNavigate();

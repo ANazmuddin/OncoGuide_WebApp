@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePrivy } from "@privy-io/react-auth";
-import { useStateContext } from "../context"; // Adjust the import path
+import { useStateContext } from "../context"; 
 
 import { CustomButton } from ".";
 import { menu, search } from "../assets";

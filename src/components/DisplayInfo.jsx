@@ -8,10 +8,10 @@ import {
   IconUserScan,
 } from "@tabler/icons-react";
 import { usePrivy } from "@privy-io/react-auth";
-import MetricsCard from "./MetricsCard"; // Adjust the import path
-import { useStateContext } from "../context"; // Ensure correct import path
+import MetricsCard from "./MetricsCard"; 
+import { useStateContext } from "../context";
 
-// Utility function to safely parse JSON that may be wrapped in markdown
+
 function safeJsonParse(input) {
   try {
     const cleaned = input

@@ -110,7 +110,7 @@ function SingleRecordDetails() {
 
 Buat dalam format kolom seperti berikut:
 - Todo: Tugas yang harus dimulai
-- Doing: Tugas yang sedang dikerjakan
+- In Progress: Tugas yang sedang dikerjakan
 - Done: Tugas yang sudah selesai
 
 Setiap tugas harus memiliki deskripsi singkat. Kategorikan tugas ke kolom yang sesuai berdasarkan tahap pengobatan. Hasilnya harus ditampilkan dalam struktur JSON berikut (tanpa tanda kutip atau penjelasan tambahan):
@@ -118,14 +118,14 @@ Setiap tugas harus memiliki deskripsi singkat. Kategorikan tugas ke kolom yang s
 {
   "columns": [
     { "id": "todo", "title": "Todo" },
-    { "id": "doing", "title": "Sedang Dikerjakan" },
-    { "id": "done", "title": "Selesai" }
+    { "id": "In Progress", "title": "In Progress" },
+    { "id": "done", "title": "Done" }
   ],
   "tasks": [
     { "id": "1", "columnId": "todo", "content": "Contoh tugas 1" },
     { "id": "2", "columnId": "todo", "content": "Contoh tugas 2" },
-    { "id": "3", "columnId": "doing", "content": "Contoh tugas 3" },
-    { "id": "4", "columnId": "doing", "content": "Contoh tugas 4" },
+    { "id": "3", "columnId": "In Progress", "content": "Contoh tugas 3" },
+    { "id": "4", "columnId": "In Progress", "content": "Contoh tugas 4" },
     { "id": "5", "columnId": "done", "content": "Contoh tugas 5" }
   ]
 }`;

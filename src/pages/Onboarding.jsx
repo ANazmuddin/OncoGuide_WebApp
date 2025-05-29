@@ -36,7 +36,7 @@ const Onboarding = () => {
       <div className="w-full max-w-md rounded-xl bg-[#1c1c24] p-8 shadow-lg">
         <h2 className="mb-2 text-center text-5xl font-bold text-white">👋 </h2>
         <h2 className="mb-6 text-center text-2xl font-bold text-white">
-          Selamat Datang di OncoGuide App
+          Welcome to OncoGuide App
         </h2>
         <form onSubmit={handleOnboarding}>
           <div className="mb-4">
