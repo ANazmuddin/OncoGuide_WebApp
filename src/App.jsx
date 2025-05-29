@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { Sidebar, Navbar } from "./components";
 import { Home, Profile, Onboarding } from "./pages";
@@ -14,11 +14,37 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (user) {
-      fetchUserByEmail(user.email.address);
+  const [analyticsSent, setAnalyticsSent] = useState(false);
+
+  // Fungsi untuk mengirim data analytics ke API serverless
+  const sendAnalyticsEvent = async () => {
+    try {
+      const response = await fetch("/api/privy-proxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_type: "login",
+          user_id: user?.id,
+          email: user?.email?.address,
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
+      const data = await response.json();
+      console.log("Analytics sent:", data);
+    } catch (error) {
+      console.error("Error sending analytics:", error);
     }
-  }, [user, fetchUserByEmail]);
+  };
+
+  // Jalankan hanya sekali setelah user login
+  useEffect(() => {
+    if (user && !analyticsSent) {
+      fetchUserByEmail(user.email.address);
+      sendAnalyticsEvent();
+      setAnalyticsSent(true);
+    }
+  }, [user, fetchUserByEmail, analyticsSent]);
 
   useEffect(() => {
     if (user && !currentUser && currentUserChecked && location.pathname !== "/onboarding") {
@@ -47,28 +73,5 @@ const App = () => {
     </div>
   );
 };
-
-const sendAnalyticsEvent = async () => {
-  try {
-    const res = await fetch("/api/privy-proxy", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        event_type: "login",
-        user_id: user?.id,
-        email: user?.email?.address,
-        timestamp: new Date().toISOString(),
-      }),
-    });
-
-    const data = await res.json();
-    console.log("Analytics sent:", data);
-  } catch (error) {
-    console.error("Proxy fetch error:", error);
-  }
-};
-
 
 export default App;
