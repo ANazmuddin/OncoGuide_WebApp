@@ -30,3 +30,27 @@ root.render(
     </Router>
   </PrivyProvider>
 );
+
+
+const sendAnalyticsEvent = async () => {
+  try {
+    const res = await fetch("/api/privy-proxy", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        event_type: "login",
+        user_id: user?.id,
+        email: user?.email?.address,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+
+    const data = await res.json();
+    console.log("Analytics sent:", data);
+  } catch (error) {
+    console.error("Proxy fetch error:", error);
+  }
+};
+
