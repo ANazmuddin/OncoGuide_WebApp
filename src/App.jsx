@@ -1,57 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Sidebar, Navbar } from "./components";
 import { Home, Profile, Onboarding } from "./pages";
 import MedicalRecords from "./pages/records/index";
 import ScreeningSchedule from "./pages/ScreeningSchedule";
 import SingleRecordDetails from "./pages/records/single-record-details";
 import { useStateContext } from "./context";
-import { usePrivy } from "@privy-io/react-auth";
 
 const App = () => {
-  const { currentUser, fetchUserByEmail, currentUserChecked } = useStateContext();
-  const { user } = usePrivy();
+  const { user, authenticated, ready, login, currentUser } = useStateContext();
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const [analyticsSent, setAnalyticsSent] = useState(false);
-
-  const sendAnalyticsEvent = async () => {
-  try {
-    const response = await fetch("/api/privy-proxy", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_type: "login",
-        user_id: user?.id,
-        email: user?.email?.address,
-        timestamp: new Date().toISOString(),
-      }),
-    });
-
-    const data = await response.json();
-    console.log("Analytics sent:", data);
-  } catch (error) {
-    console.error("Error sending analytics:", error);
-  }
-};
-
-
 
   useEffect(() => {
-    if (user && !analyticsSent) {
-      fetchUserByEmail(user.email.address);
-      sendAnalyticsEvent();
-      setAnalyticsSent(true);
+    if (ready && !authenticated) {
+      login();
+    } else if (user && !currentUser) {
+      navigate("/Onboarding");
     }
-  }, [user, analyticsSent, fetchUserByEmail]);
-
-
-  useEffect(() => {
-    if (user && !currentUser && currentUserChecked && location.pathname !== "/onboarding") {
-      navigate("/onboarding");
-    }
-  }, [user, currentUser, currentUserChecked, location.pathname, navigate]);
+  }, [user, authenticated, ready, login, currentUser, navigate]);
 
   return (
     <div className="sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4">
@@ -67,7 +33,10 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/medical-records" element={<MedicalRecords />} />
-          <Route path="/medical-records/:id" element={<SingleRecordDetails />} />
+          <Route
+            path="/medical-records/:id"
+            element={<SingleRecordDetails />}
+          />
           <Route path="/screening-schedules" element={<ScreeningSchedule />} />
         </Routes>
       </div>
