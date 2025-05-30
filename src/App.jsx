@@ -10,47 +10,48 @@ import { usePrivy } from "@privy-io/react-auth";
 
 const App = () => {
   const { currentUser, fetchUserByEmail, currentUserChecked } = useStateContext();
-  const { user, authenticated } = usePrivy();
+  const { user } = usePrivy();
   const navigate = useNavigate();
   const location = useLocation();
 
   const [analyticsSent, setAnalyticsSent] = useState(false);
 
-  // Fungsi untuk mengirim data analytics ke API serverless
   const sendAnalyticsEvent = async () => {
-    try {
-      const response = await fetch("/api/privy-proxy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event_type: "login",
-          user_id: user?.id,
-          email: user?.email?.address,
-          timestamp: new Date().toISOString(),
-        }),
-      });
+  try {
+    const response = await fetch("/api/privy-proxy", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_type: "login",
+        user_id: user?.id,
+        email: user?.email?.address,
+        timestamp: new Date().toISOString(),
+      }),
+    });
 
-      const data = await response.json();
-      console.log("Analytics sent:", data);
-    } catch (error) {
-      console.error("Error sending analytics:", error);
-    }
-  };
+    const data = await response.json();
+    console.log("Analytics sent:", data);
+  } catch (error) {
+    console.error("Error sending analytics:", error);
+  }
+};
 
-  // Jalankan hanya sekali setelah user login
+
+
   useEffect(() => {
     if (user && !analyticsSent) {
       fetchUserByEmail(user.email.address);
       sendAnalyticsEvent();
       setAnalyticsSent(true);
     }
-  }, [user, fetchUserByEmail, analyticsSent]);
+  }, [user, analyticsSent, fetchUserByEmail]);
+
 
   useEffect(() => {
     if (user && !currentUser && currentUserChecked && location.pathname !== "/onboarding") {
       navigate("/onboarding");
     }
-  }, [user, currentUser, currentUserChecked, navigate, location.pathname]);
+  }, [user, currentUser, currentUserChecked, location.pathname, navigate]);
 
   return (
     <div className="sm:-8 relative flex min-h-screen flex-row bg-[#13131a] p-4">
