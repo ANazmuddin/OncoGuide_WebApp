@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { usePrivy } from "@privy-io/react-auth";
-import { useStateContext } from "../context"; 
+import { useStateContext } from "../context";
 
 import { CustomButton } from ".";
 import { menu, search } from "../assets";
 import { navlinks } from "../constants";
-import { IconTableHeart } from "@tabler/icons-react";
+import { IconHeartHandshake } from "@tabler/icons-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -70,14 +70,14 @@ const Navbar = () => {
         <CustomButton
           btnType="button"
           title={authenticated ? "Log Out" : "Log In"}
-          styles={authenticated ? "bg-[#b80f0a]" : "bg-[#1dc071]"}
+          styles={authenticated ? "bg-[#1dc071]" : "bg-[#8c6dfd]"}
           handleClick={handleLoginLogout}
         />
       </div>
 
       <div className="relative flex items-center justify-between sm:hidden">
         <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-[10px] bg-[#2c2f32]">
-          <IconTableHeart size={40} color="#1ec070" className="p-2" />
+          <IconHeartHandshake size={40} color="#1ec070" className="p-2" />
         </div>
         <img
           src={menu}

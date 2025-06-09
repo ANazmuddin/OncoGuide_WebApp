@@ -86,7 +86,7 @@ function SingleRecordDetails() {
         documentID: state.id,
         analysisResult: text,
         kanbanRecords: "",
-      });
+      }); 
       setUploadSuccess(true);
       setIsModalOpen(false);
       setFilename("");
